@@ -8,6 +8,7 @@
 
 export PATH=/sbin:/bin:/usr/bin:/usr/sbin
 
+. /usr/lib/grml/core.sh
 . /etc/grml_colors
 . /etc/grml/lsb-functions
 
@@ -23,16 +24,15 @@ REMOVABLE=false
 USB_DEVICE=false
 NOPROMPT=${NOPROMPT:-false}
 NOEJECT=${NOEJECT:-false}
-CMDLINE="$(cat /proc/cmdline 2>/dev/null)"
 
 # Check if we are running from a GRML-CD or HD
 [ -e /etc/grml_cd ] || INSTALLED=true
 
 # Assume that we don't want the eject+prompt stuff when running in one
 # of the special modes:
-grep -qe 'toram' -qe '2ram' -qe 'usb' -qe 'serial' \
-     -qe 'fromhd' -qe 'isofrom' -qe 'fromiso' -qe 'findiso' \
-     /proc/cmdline && INSTALLED=true
+checkbootparam 'toram'   || checkbootparam '2ram' || checkbootparam 'usb' \
+checkbootparam 'serial'  || checkbootparam 'fromhd' || checkbootparam 'isofrom' \
+checkbootparam 'fromiso' || checkbootparam  'findiso' && INSTALLED=true
 
 # detect cdrom device
 if ! $INSTALLED ; then

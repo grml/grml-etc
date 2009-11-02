@@ -7,7 +7,9 @@
 # Latest change: Sam Mai 27 14:43:56 CEST 2006 [mika]
 ################################################################################
 
-if grep -q nocolor /proc/cmdline ; then
+. /usr/lib/grml/core.sh
+
+if checkbootparam nocolor ; then
    RC_NOCOLOR=yes
    . /etc/grml/lsb-functions
 else
